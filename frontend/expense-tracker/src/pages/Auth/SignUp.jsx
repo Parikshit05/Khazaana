@@ -43,19 +43,17 @@ const SignUp = () => {
     }
 
     // SignUp API call
-    try{
-
+    try {
       // Upload image if present
-      if(profilePic){
+      if (profilePic) {
         const imgUploadRes = await uploadImage(profilePic);
         profileImageUrl = imgUploadRes.imageUrl || "";
       }
 
-
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
         fullName,
         email,
-        password, 
+        password,
         profileImageUrl,
       });
       const { token, user } = response.data;
@@ -65,10 +63,10 @@ const SignUp = () => {
         setError(null);
         navigate("/dashboard");
       }
-    }catch (error) {
-      if(error.response && error.response.data.message) {
+    } catch (error) {
+      if (error.response && error.response.data.message) {
         setError(error.response.data.message);
-      } else{
+      } else {
         setError("An unexpected error occurred. Please try again.");
       }
     }
@@ -81,17 +79,10 @@ const SignUp = () => {
           Join us today by entering your details below.
         </p>
 
-        <form onSubmit={handleSignUp}>
+        {/* <form onSubmit={handleSignUp}>
           <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* <Input
-              type="text"
-              label="Full Name"
-              placeholder="John Doe"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            /> */}
             <Input
               type="text"
               label="Full Name"
@@ -99,7 +90,7 @@ const SignUp = () => {
               value={fullName}
               onChange={setFullName} 
             />
-
+            
             <Input
               type="email"
               label="Email"
@@ -124,6 +115,57 @@ const SignUp = () => {
           </button>
 
           <p className="text-[13px] text-slate-800 mt-3">
+            Already have an account?{" "}
+            <Link className="font-medium text-primary underline" to="/login">
+              Login
+            </Link>
+          </p>
+        </form> */}
+
+        <form onSubmit={handleSignUp} className="w-full max-w-2xl mx-auto">
+          <div className="flex justify-center mb-6">
+            <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <Input
+                type="text"
+                label="Full Name"
+                placeholder="John Doe"
+                value={fullName}
+                onChange={setFullName}
+              />
+            </div>
+            <div>
+              <Input
+                type="email"
+                label="Email"
+                placeholder="john@example.com"
+                value={email}
+                onChange={setEmail}
+              />
+            </div>
+            <div className="md:col-span-2">
+              <Input
+                type="password"
+                placeholder="Min 8 Characters"
+                label="Password"
+                value={password}
+                onChange={setPassword}
+              />
+            </div>
+          </div>
+
+          {error && (
+            <p className="text-red-500 text-sm font-medium mb-4">{error}</p>
+          )}
+
+          <button type="submit" className="btn-primary w-full">
+            SIGN UP
+          </button>
+
+          <p className="text-[13px] text-slate-800 mt-4 text-center">
             Already have an account?{" "}
             <Link className="font-medium text-primary underline" to="/login">
               Login
