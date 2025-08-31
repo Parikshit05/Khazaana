@@ -24,14 +24,6 @@ export const AddThousandsSeparator = (num) => {
   return fractionalPart ? `${formattedIntegerPart}.${fractionalPart}` : formattedIntegerPart;
 };
 
-// export const prepareExpenseBarChartData = (data = []) => {
-//   const chartData = data.map((item) => ({
-//     category: item?.category,
-//     amount: item?.amount,
-//   }));
-
-//   return chartData;
-// };
 export const prepareExpenseBarChartData = (data = []) => {
   if (!Array.isArray(data)) return [];
 
@@ -58,29 +50,55 @@ export const prepareExpenseBarChartData = (data = []) => {
   }));
 };
 
-
-// export const prepareIncomeBarChartData = (data = []) => {
-//   const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
-
-//   const chartData = sortedData.map((item) => ({
-//     month: moment(item?.date).format("Do MMM"),
-//     amount: item?.amount,
-//     source: item?.source,
-//   }));
-
-//   return chartData;
-// };
-
 export const prepareIncomeBarChartData = (data) => {
   const incomeArray = Array.isArray(data) ? data : [];
 
-  const sortedData = [...incomeArray].sort(
+  // Group by date
+  const grouped = incomeArray.reduce((acc, item) => {
+    const day = moment(item.date).format("YYYY-MM-DD"); // stable key for grouping
+    if (!acc[day]) {
+      acc[day] = { ...item, amount: 0 };
+    }
+    acc[day].amount += item.amount;
+    return acc;
+  }, {});
+
+  // Convert grouped data back into array and sort by date
+  const sortedData = Object.values(grouped).sort(
     (a, b) => new Date(a.date) - new Date(b.date)
   );
 
+  // Final format
   return sortedData.map((item) => ({
-    month: moment(item?.date).format("Do MMM"),
-    amount: item?.amount,
-    source: item?.source,
+    month: moment(item.date).format("Do MMM"), // keep same formatting
+    amount: item.amount,
+    source: item.source, // if multiple sources in same day → last one kept
   }));
+};
+
+
+export const prepareExpenseLineChartData = (data = []) => {
+  // Group by date
+  const grouped = data.reduce((acc, item) => {
+    const day = moment(item.date).format("YYYY-MM-DD"); // stable key for grouping
+    if (!acc[day]) {
+      acc[day] = { ...item, amount: 0 };
+    }
+    acc[day].amount += item.amount;
+    return acc;
+  }, {});
+
+  // Convert grouped data back into array and sort by date
+  const sortedData = Object.values(grouped).sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
+  );
+
+  // Final format
+  const chartData = sortedData.map((item) => ({
+    month: moment(item.date).format("Do MMM"), // keep your format
+    amount: item.amount,
+    category: item.category, // optional, will just keep last category of that day
+  }));
+
+  return chartData;
 };

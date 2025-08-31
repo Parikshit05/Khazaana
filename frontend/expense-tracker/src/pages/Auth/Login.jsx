@@ -27,10 +27,10 @@ const Login = () => {
       setError("Please enter a valid email address.");
       return;
     }
-    // if (password.length < 8) {
-    //   setError("Password must be at least 8 characters long.");
-    //   return;
-    // }
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
 
     // Login Api Call
 

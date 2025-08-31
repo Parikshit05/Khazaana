@@ -13,14 +13,14 @@ export const API_PATHS = {
         ADD_INCOME: `${BASE_URL}/api/v1/income/add`,
         GET_ALL_INCOME: `${BASE_URL}/api/v1/income/all`,
         DELETE_INCOME: (id) => `${BASE_URL}/api/v1/income/delete/${id}`,
-        DOWNLOAD_INCOME: `${BASE_URL}/api/v1/income/downloadExcel`,
+        DOWNLOAD_INCOME: `${BASE_URL}/api/v1/income/download/excel`,
 
     },
     EXPENSE: {
         ADD_EXPENSE: `${BASE_URL}/api/v1/expense/add`,
-        GET_ALL_EXPENSE: `${BASE_URL}/api/v1/expense`,
+        GET_ALL_EXPENSE: `${BASE_URL}/api/v1/expense/all`,
         DELETE_EXPENSE: (id) => `${BASE_URL}/api/v1/expense/delete/${id}`,
-        DOWNLOAD_EXPENSE: `${BASE_URL}/api/v1/expense/downloadExcel`,
+        DOWNLOAD_EXPENSE: `${BASE_URL}/api/v1/expense/download/excel`,
     },
     IMAGE:{
         UPLOAD_IMAGE: `${BASE_URL}/api/upload`,
